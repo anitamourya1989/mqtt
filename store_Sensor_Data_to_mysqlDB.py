@@ -1,9 +1,9 @@
 #------------------------------------------
-#--- Author: Pradeep Singh
-#--- Date: 20th January 2017
+#--- Author: Anita Mourya
+#--- Date: 20th January 2019
 #--- Version: 1.0
 #--- Python Ver: 2.7
-#--- Details At: https://iotbytes.wordpress.com/store-mqtt-data-from-sensors-into-sql-database/
+#--- Details At: http://www.anitamourya.com
 #------------------------------------------
 
 import json
@@ -234,6 +234,99 @@ def DHT22_Sensor_Data_Handler(DeviceId, jsonData, Topic):
 	# print "Inserted devices_sensor_data into Database."
 	print ""
 
+# Function to save State to DB Table
+def DHT22_3phase_Sensor_Data_Handler(DeviceId, jsonData, Topic):
+	#Parse Data
+	json_Dict = json.loads(jsonData)
+	# print 'yeah 4'
+	DeviceId = Topic
+	DeviceType = 'esp8266_meter3Phase1'
+	Time = json_Dict.get('Time')
+	ENERGY_TotalStartTime = ''
+	ENERGY_Total = json_Dict.get('D31')
+	ENERGY_Yesterday = ''
+	ENERGY_Today = ''
+	ENERGY_Period = json_Dict.get('D8')
+	ENERGY_Power = json_Dict.get('D2')
+	ENERGY_ApparentPower = json_Dict.get('D1')
+	ENERGY_ReactivePower = json_Dict.get('D3')
+	ENERGY_Factor = json_Dict.get('D4')
+	ENERGY_Voltage = json_Dict.get('D6')
+	ENERGY_Current = json_Dict.get('D7')
+	line_to_line_voltage = json_Dict.get('D5')
+	rphase_apparent_power = json_Dict.get('D9')
+	rphase_active_power = json_Dict.get('D10')
+	rphase_reactive_power = json_Dict.get('D11')
+	rphase_power_factor = json_Dict.get('D12')
+	r_yphase_voltage = json_Dict.get('D13')
+	rphase_to_neutral_voltage = json_Dict.get('D14')
+	rphase_current = json_Dict.get('D15')
+	yphase_apparent_power = json_Dict.get('D16')
+	yphase_active_power = json_Dict.get('D17')
+	yphase_reactive_power = json_Dict.get('D18')
+	yphase_power_factor = json_Dict.get('D19')
+	y_bphase_voltage = json_Dict.get('D20')
+	yphase_to_neutral_voltage = json_Dict.get('D21')
+	yphase_current = json_Dict.get('D22')
+	bphase_apparent_power = json_Dict.get('D23')
+	bphase_active_power = json_Dict.get('D24')
+	bphase_reactive_power = json_Dict.get('D25')
+	bphase_power_factor = json_Dict.get('D26')
+	b_rphase_voltage = json_Dict.get('D27')
+	bphase_to_neutral_voltage = json_Dict.get('D28')
+	bphase_current = json_Dict.get('D29')
+	forward_apparent_energy = json_Dict.get('D30')
+	# forward_active_energy = json_Dict.get('D31')
+	forward_reactive_energy = json_Dict.get('D32')
+	voltage_thd_rphase = json_Dict.get('D33')
+	voltage_thd_yphase = json_Dict.get('D34')
+	voltage_thd_bphase = json_Dict.get('D35')
+	current_thd_rphase = json_Dict.get('D36')
+	current_thd_yphase = json_Dict.get('D37')
+	current_thd_bphase = json_Dict.get('D38')
+
+	# tz_India = pytz.timezone('Asia/Kolkata')
+	# datetime_India = datetime.now(tz_India)
+	# created_at = datetime_India.strftime("%Y-%m-%d %H:%M:%S")
+	created_at = ''
+
+	#Push into DB Table
+	# dbObj = DatabaseManager()
+	# print 'yeah 5'
+	# dbObj.executeQuery("desc devices_state_data")
+	# dbObj.add_del_update_db_record("INSERT INTO devices_state_data (DeviceId, `Time`, Uptime, Heap, SleepMode, Sleep, LoadAvg, POWER, Wifi_AP, Wifi_SSId, Wifi_BSSId, Wifi_Channel, Wifi_RSSI, Wifi_LinkCount, Wifi_Downtime) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",[DeviceId, Time, Uptime, Heap, SleepMode, Sleep, LoadAvg, POWER, Wifi_AP, Wifi_SSId, Wifi_BSSId, Wifi_Channel, Wifi_RSSI, Wifi_LinkCount, Wifi_Downtime])
+
+	try:
+		conn = mysql.connector.connect(host="localhost",database="techdeve_homeauto",user="techdeve_homeauto",passwd="vg&faA=2byWP")
+		if conn.is_connected():
+			cur = conn.cursor()
+
+	except Error as e:
+		print("Error while connecting to MySQL", e)
+
+	# cur.execute("select * from devices_state_data")
+	# print cur.fetchall()
+
+	sql = ("INSERT INTO devices_sensor_data "
+		"(DeviceType, DeviceId, `Time`, ENERGY_TotalStartTime, ENERGY_Total, ENERGY_Yesterday, ENERGY_Today, ENERGY_Period, ENERGY_Power, ENERGY_ApparentPower, ENERGY_ReactivePower, ENERGY_Factor, ENERGY_Voltage, ENERGY_Current, line_to_line_voltage, rphase_apparent_power, rphase_active_power, rphase_reactive_power, rphase_power_factor, r_yphase_voltage, rphase_to_neutral_voltage, rphase_current, yphase_apparent_power, yphase_active_power, yphase_reactive_power, yphase_power_factor, y_bphase_voltage, yphase_to_neutral_voltage, yphase_current, bphase_apparent_power, bphase_active_power, bphase_reactive_power, bphase_power_factor, b_rphase_voltage, bphase_to_neutral_voltage, bphase_current, forward_apparent_energy, forward_reactive_energy, voltage_thd_rphase, voltage_thd_yphase, voltage_thd_bphase, current_thd_rphase, current_thd_yphase, current_thd_bphase)" 
+		" VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)")
+	val = (DeviceType, DeviceId, Time, ENERGY_TotalStartTime, ENERGY_Total, ENERGY_Yesterday, ENERGY_Today, ENERGY_Period, ENERGY_Power, ENERGY_ApparentPower, ENERGY_ReactivePower, ENERGY_Factor, ENERGY_Voltage, ENERGY_Current, line_to_line_voltage, rphase_apparent_power, rphase_active_power, rphase_reactive_power, rphase_power_factor, r_yphase_voltage, rphase_to_neutral_voltage, rphase_current, yphase_apparent_power, yphase_active_power, yphase_reactive_power, yphase_power_factor, y_bphase_voltage, yphase_to_neutral_voltage, yphase_current, bphase_apparent_power, bphase_active_power, bphase_reactive_power, bphase_power_factor, b_rphase_voltage, bphase_to_neutral_voltage, bphase_current, forward_apparent_energy, forward_reactive_energy, voltage_thd_rphase, voltage_thd_yphase, voltage_thd_bphase, current_thd_rphase, current_thd_yphase, current_thd_bphase)
+	try:
+		# print sql
+		# print val
+		cur.execute(sql,val)
+		# print "yeahh"
+		conn.commit()
+		print "Inserted devices_sensor_data into Database from 3phase."
+		print ""
+	except Error as e:
+		print("Executing while connecting to MySQL", e)
+		conn.rollback()
+
+	# del dbObj
+	# print "Inserted devices_state_data into Database."
+	print ""
+
 #===============================================================
 # Master Function to Select DB Funtion based on MQTT Topic
 
@@ -249,6 +342,9 @@ def sensor_Data_Handler(Topic, jsonData):
 	elif (Topic.find("iit") != -1):
 		# print 'yeah iit'
 		DHT22_Sensor_Data_Handler(DeviceId[1], jsonData, Topic)
+	elif (Topic.find("esp8266/meter3Phase1") != -1):
+		# print 'yeah meter3Phase1'
+		DHT22_3phase_Sensor_Data_Handler(DeviceId[1], jsonData, Topic)
 	elif (Topic.find("esp8266") != -1):
 		# print 'yeah esp8266'
 		DHT22_Sensor_Data_Handler(DeviceId[1], jsonData, Topic)
