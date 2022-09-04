@@ -240,7 +240,7 @@ def DHT22_3phase_Sensor_Data_Handler(DeviceId, jsonData, Topic):
 	json_Dict = json.loads(jsonData)
 	# print 'yeah 4'
 	DeviceId = Topic
-	DeviceType = 'esp8266_meter3Phase1'
+	DeviceType = 'esp8266_meter3Phase'
 	Time = json_Dict.get('Time')
 	ENERGY_TotalStartTime = ''
 	ENERGY_Total = json_Dict.get('D31')
@@ -342,7 +342,7 @@ def sensor_Data_Handler(Topic, jsonData):
 	elif (Topic.find("iit") != -1):
 		# print 'yeah iit'
 		DHT22_Sensor_Data_Handler(DeviceId[1], jsonData, Topic)
-	elif (Topic.find("esp8266/meter3Phase1") != -1):
+	elif (Topic.find("esp8266/meter3Phase") != -1):
 		# print 'yeah meter3Phase1'
 		DHT22_3phase_Sensor_Data_Handler(DeviceId[1], jsonData, Topic)
 	elif (Topic.find("esp8266") != -1):
