@@ -358,9 +358,9 @@ def LCT_Sensor_Data_Handler(DeviceId, jsonData, Topic):
     # print cur.fetchall()
 
     sql = ("INSERT INTO devices_sensor_data "
-        "(DeviceType, DeviceId, `Time`, ENERGY_Factor, ENERGY_Voltage, battery_voltage, temp_1, temp_2, temp_3)"
-        " VALUES (%s, %s, %s, %s, %s, %s)")
-    val = (DeviceType, DeviceId, Time, ENERGY_Factor, ENERGY_Voltage, battery_voltage, temp_1, temp_2, temp_3)
+        "(DeviceType, DeviceId, `Time`, ENERGY_Factor, battery_voltage, temp_1, temp_2, temp_3)"
+        " VALUES (%s, %s, %s, %s, %s, %s, %s, %s)")
+    val = (DeviceType, DeviceId, Time, ENERGY_Factor, battery_voltage, temp_1, temp_2, temp_3)
 
     try:
         # print sql
