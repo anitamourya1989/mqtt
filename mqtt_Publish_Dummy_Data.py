@@ -82,6 +82,40 @@ def publish_Fake_Sensor_Values_to_MQTT():
         publish_To_Topic(MQTT_Topic_State, state_json_data)
         toggle = 1
 
+    if toggle == 1:
+        State_Fake_Value = float("{0:.2f}".format(random.uniform(50, 100)))
+
+        State_Data = {}
+        State_Data['Time'] = (datetime.today()).strftime("%d-%b-%Y %H:%M:%S:%f")
+        State_Data['ID'] = "A84041417184836F"
+        State_Data['C'] = "1.10"
+        State_Data['PF'] = 0.999
+        State_Data['BV'] = 3.617
+#         State_Data['UT'] = State_Fake_Value
+        State_Data['UT'] = "1663970993"
+        state_json_data = json.dumps(State_Data)
+
+        print("Publishing fake LCT1C Value: ", str(State_Fake_Value), "...")
+        publish_To_Topic(MQTT_Topic_State, state_json_data)
+        toggle = 2
+
+    if toggle == 2:
+        State_Fake_Value = float("{0:.2f}".format(random.uniform(50, 100)))
+
+        State_Data = {}
+        State_Data['Time'] = (datetime.today()).strftime("%d-%b-%Y %H:%M:%S:%f")
+        State_Data['ID'] = "A84041417184836D"
+        State_Data['T1'] = -18.9
+        State_Data['T2'] = None
+        State_Data['T3'] = None
+#         State_Data['UT'] = State_Fake_Value
+        State_Data['UT'] = "1663970994"
+        state_json_data = json.dumps(State_Data)
+
+        print("Publishing fake LCT1T Value: ", str(State_Fake_Value), "...")
+        publish_To_Topic(MQTT_Topic_State, state_json_data)
+        toggle = 3
+
     else:
         Sensor_Fake_Value = float("{0:.2f}".format(random.uniform(1, 30)))
 
