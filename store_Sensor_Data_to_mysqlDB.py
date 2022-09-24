@@ -314,7 +314,7 @@ def DHT22_3phase_Sensor_Data_Handler(DeviceId, jsonData, Topic):
 # Function to save Sensor to DB Table
 def LCT_Sensor_Data_Handler(DeviceId, jsonData, Topic):
     #Parse Data
-    print("LCT inside")
+    # print("LCT inside")
     json_Dict = json.loads(jsonData)
     DeviceArr = Topic.split('/')
     DeviceId = Topic
@@ -383,7 +383,7 @@ def LCT_Sensor_Data_Handler(DeviceId, jsonData, Topic):
 
 def sensor_Data_Handler(Topic, jsonData):
     DeviceId = Topic.split('/')
-    print("in function")
+    # print("in function")
     if (Topic.find("STATE") != -1):
         # print("yeah 2")
         DHT22_State_Data_Handler(DeviceId[1], jsonData, Topic)
@@ -397,7 +397,7 @@ def sensor_Data_Handler(Topic, jsonData):
         # print("yeah meter3Phase1")
         DHT22_3phase_Sensor_Data_Handler(DeviceId[1], jsonData, Topic)
     elif (Topic.find("LCT") != -1):
-        print("yeah LCT1C")
+        # print("yeah LCT1C")
         LCT_Sensor_Data_Handler(DeviceId[1], jsonData, Topic)
     elif (Topic.find("esp8266") != -1):
         # print("yeah esp8266")
