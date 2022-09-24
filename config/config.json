@@ -1,0 +1,15 @@
+{
+    "mysql": {
+        "host": "localhost",
+        "user": "techdeve_homeauto",
+        "passwd": "vg&faA=2byWP",
+        "database": "techdeve_homeauto"
+    },
+    "mqtt": {
+        "broker": "162.241.69.82",
+        "user": "homeautomation",
+        "passwd": "homeauto@!@#$",
+        "port": 1883,
+        "alive_interval": 45
+    }
+}
