@@ -9,63 +9,8 @@
 import json
 import mysql.connector
 from mysql.connector import Error
-# import pytz
-# from datetime import datetime
-
-#===============================================================
-# Database Manager Class
-
-class DatabaseManager():
-    def __init__(self):
-
-        try:
-            self.conn = mysql.connector.connect(host = "localhost",database="techdeve_homeauto",user = "techdeve_homeauto",passwd = "vg&faA=2byWP")
-            if self.conn.is_connected():
-                self.cur = self.conn.cursor()
-                return self.cur
-                # db_Info = self.conn.get_server_info()
-                # print("Connected to MySQL Server version ", db_Info)
-                # self.cur.execute("select database();")
-                # record = self.cur.fetchone()
-                # print("You're connected to database: ", record)
-
-        except Error as e:
-            print("Error while connecting to MySQL", e)
-
-        # finally:
-            # if (conn.is_connected()):
-            # 	cur.close()
-            # 	conn.close()
-            # 	print("MySQL conn is closed")
-
-    def add_del_update_db_record(self,sql_query,args=()):
-        self.cur.execute(sql_query,args)
-        self.conn.commit()
-
-    def executeQuery(self,sql_query):
-        self.cur.execute(sql_query)
-        # return self.cur.fetchone()
-
-    def rows(self):
-        return self.cur.rowcount
-
-    # def __init__(self):
-    # 	self.conn = sqlite3.connect(DB_Name)
-    # 	self.conn.execute('pragma foreign_keys = on')
-    # 	self.conn.commit()
-    # 	self.cur = self.conn.cursor()
-
-    # def add_del_update_db_record(self, sql_query, args=()):
-    # 	self.cur.execute(sql_query, args)
-    # 	self.conn.commit()
-    # 	return
-
-    def __del__(self):
-        self.cur.close()
-        self.conn.close()
-
-#===============================================================
-# Functions to push Sensor Data into Database
+import pytz
+from datetime import datetime
 
 # Function to save State to DB Table
 def DHT22_State_Data_Handler(DeviceId, jsonData, Topic):
@@ -122,7 +67,7 @@ def DHT22_State_Data_Handler(DeviceId, jsonData, Topic):
     # print("Inserted devices_state_data into Database.")
     print("")
 
-# Function to save Sensor to DB Table
+# Function to save Regular, IIT and esp8266 data to DB
 def DHT22_Sensor_Data_Handler(DeviceId, jsonData, Topic):
     #Parse Data
     # print("yeah 6")
@@ -224,7 +169,7 @@ def DHT22_Sensor_Data_Handler(DeviceId, jsonData, Topic):
     # print("Inserted devices_sensor_data into Database.")
     print("")
 
-# Function to save Sensor to DB Table
+# Function to save esp8266_meter3Phase data to DB
 def DHT22_3phase_Sensor_Data_Handler(DeviceId, jsonData, Topic):
     #Parse Data
     json_Dict = json.loads(jsonData)
@@ -311,7 +256,7 @@ def DHT22_3phase_Sensor_Data_Handler(DeviceId, jsonData, Topic):
     # print("Inserted devices_state_data into Database.")
     print("")
 
-# Function to save Sensor to DB Table
+# Function to save LCT data to DB
 def LCT_Sensor_Data_Handler(DeviceId, jsonData, Topic):
     #Parse Data
     # print("LCT inside")
@@ -319,7 +264,12 @@ def LCT_Sensor_Data_Handler(DeviceId, jsonData, Topic):
     DeviceArr = Topic.split('/')
     DeviceId = Topic
     DeviceType = DeviceArr[0]
-    Time = json_Dict.get('UT')
+    UT = json_Dict.get('UT')
+
+    # Time
+    tz = pytz.timezone('Asia/Kolkata')
+    dt = datetime.fromtimestamp(UT, tz)
+    Time = dt.strftime('%Y-%m-%d %H:%M:%S')# %Z%z
 
     if 'BV' in json_Dict:
         ENERGY_Current = json_Dict.get('C')
