@@ -179,6 +179,10 @@ def DHT22_3phase_Sensor_Data_Handler(DeviceId, jsonData, Topic):
     Time = json_Dict.get('Time')
     ENERGY_TotalStartTime = ''
     ENERGY_Total = json_Dict.get('D31')
+    # Check if the topic is allowed
+    allowed_topics = ["esp8266/meter3Phase4", "esp8266/meter3Phase5"]
+    if Topic in allowed_topics:
+        ENERGY_Total /= 1000
     ENERGY_Yesterday = ''
     ENERGY_Today = ''
     ENERGY_Period = json_Dict.get('D8')

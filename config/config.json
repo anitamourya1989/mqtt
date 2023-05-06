@@ -1,6 +1,6 @@
 {
     "mysql": {
-        "host": "localhost",
+        "host": "162.241.69.82",
         "user": "techdeve_homeauto",
         "passwd": "vg&faA=2byWP",
         "database": "techdeve_homeauto"
